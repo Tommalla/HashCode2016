@@ -7,3 +7,4 @@ Ustalenia
 4. Na początku czytamy zadanko i inputy.
 5. Początkowy task dla murzyna: wczytywanie inputu i ocena otuputu.
 6. Zipowanie kodu: wrzuciłem skrypt zipCode.sh do głównego katalogu. Żeby działało, kod trzymajcie w src.
+Skrypt tworzy zipa z najnowszego kodu o nazwie: godzinaMinutaSekunda.zip (np. 201433.zip). Stare zipy przenosi do oldzips.
