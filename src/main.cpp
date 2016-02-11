@@ -73,7 +73,13 @@ int main(int argc, char const *argv[])
 				int y;
 				ss >> x;
 				ss >> y;
-				WarehouseCoords[loadedWarehouses] = coords(x,y);	
+				WarehouseCoords[loadedWarehouses] = coords(x,y);
+
+				//All drones started from warehouse 0
+				if(loadedWarehouses == 0)
+				{
+					dronsCoords.resize(numOfDrones, coords(x,y));
+				}
 			}
 			else
 			{
@@ -155,6 +161,11 @@ int main(int argc, char const *argv[])
 			std::cerr << *it2 << " ";
 		}
 		std::cerr << std::endl;
+	}
+
+	for(auto it = dronsCoords.begin(); it != dronsCoords.end(); ++it)
+	{
+		std::cerr << "Current drons coords: " << std::get<0>(*it) << ", " << std::get<1>(*it) << std::endl;
 	}
 
 	droneCommands.push_back(wait(1, 2));
