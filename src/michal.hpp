@@ -78,6 +78,15 @@ void sendDrone(int warehouseId, int drone, int currentOrder, std::unordered_map<
 	}
 }
 
+bool tooHeavyOrder(std::unordered_map<int, int>& orderProducts) {
+	int load = 0;
+	for (auto product : orderProducts) {
+		load += product.second;
+	}
+	
+	return load > maxPayload;
+}
+
 void calculate() {
 	std::cerr << "hello calculate\n";
 	initOrders();
@@ -87,6 +96,9 @@ void calculate() {
 		
 		int currentOrder = i;
 		std::unordered_map<int, int> orderProducts = generateOrderProducts(currentOrder);
+		if (tooHeavyOrder(orderProducts))
+			continue;
+		
 		int warehouse = findWarehouseForOrder(currentOrder, orderProducts);
 		if (warehouse >= 0) {
 			std::pair<int, int> droneRecord = getSoonestFreeDrone();
