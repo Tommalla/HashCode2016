@@ -18,6 +18,7 @@ void initOrders() {
 		order current;
 		current.destination = orderDestination[i];
 		current.products = numberOfProductsPerOrder[i];
+		current.orderId = i;
 		orders.push_back(current);
 	}
 }
@@ -73,7 +74,7 @@ void sendDrone(int warehouseId, int drone, int currentOrder, std::unordered_map<
 	registerDroneBusy(newTime, drone);
 	
 	for (auto product : orderProducts) {
-		droneCommands.push_back(deliver(drone, currentOrder, product.first, product.second));
+		droneCommands.push_back(deliver(drone, orders[currentOrder].orderId, product.first, product.second));
 	}
 }
 

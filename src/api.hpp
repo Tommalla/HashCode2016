@@ -140,6 +140,7 @@ pair<int, int> getSoonestFreeDrone() {
 }
 
 struct order {
+	int orderId;
 	coords destination;
 	productsPerTypeVector products;
 };
