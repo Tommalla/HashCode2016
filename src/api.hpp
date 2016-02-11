@@ -105,6 +105,8 @@ int numOfOrders;
 std::vector<coords> orderDestination;
 std::vector<productsPerTypeVector> numberOfProductsPerOrder;
 
+//Current dron states
+std::vector<coords> dronsCoords;
 
 vector<DroneCommand *> droneCommands;
 
