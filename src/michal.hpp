@@ -64,13 +64,13 @@ void sendDrone(int warehouseId, int drone, int currentOrder, std::unordered_map<
 		// first type
 		// second quantity
 		warehouse[product.first] = warehouse[product.first] - product.second;
-		droneCommands.push_back(droneCommands.load(drone, warehouseId, product.first, product.second));
+		droneCommands.push_back(load(drone, warehouseId, product.first, product.second));
 	}
 	
 	registerDroneBusy(newTime, drone);
 	
 	for (auto product : orderProducts) {
-		
+		droneCommands.push_back(deliver(drone, currentOrder, product.first, product.second));
 	}
 }
 
