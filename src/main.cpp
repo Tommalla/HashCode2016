@@ -1,5 +1,5 @@
 #include "api.hpp"
-#include "michal.hpp"
+//#include "michal.hpp"
 #include <utility>
 #include <sstream>
 
@@ -142,7 +142,6 @@ int main(int argc, char const *argv[])
 		std::cerr << std::endl;
 	}
 
-	std::cout << "SIZE: " << orderDestination.size();
 	for(auto it = orderDestination.begin(); it != orderDestination.end(); ++it)
 	{
 		std::cerr << "Order destination coords: " << std::get<0>(*it) << ", " << std::get<1>(*it) << std::endl;
@@ -158,5 +157,13 @@ int main(int argc, char const *argv[])
 		std::cerr << std::endl;
 	}
 
+	droneCommands.push_back(wait(1, 2));
+	droneCommands.push_back(deliver(0, 2, 3, 10));
+	
+	for (DroneCommand* command : droneCommands) {
+		command->printCommand();
+		delete command;
+	}
+	
     return 0;
 }
