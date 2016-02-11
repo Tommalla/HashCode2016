@@ -1,17 +1,20 @@
 #include <vector>
 #include <stdio.h>
+#include <iostream>
+#include <fstream>
 
 int main(int argc, char const *argv[])
 {
     std::vector<char> v;
-    if (FILE *fp = fopen("filename", "r"))
-    {
-        char buf[1024];
-        while (size_t len = fread(buf, 1, sizeof(buf), fp))
-        {
-            v.insert(v.end(), buf, buf + len);
-        }
-        fclose(fp);
-    }
+ 	std::ifstream file("input");
+ 	
+ 	int line_num = 0;
+    
+    for(std::string line; getline(file, line); )
+	{
+		std::cout << line << std::endl; 
+		++line_num;
+	}
+
     return 0;
 }
