@@ -81,7 +81,7 @@ void sendDrone(int warehouseId, int drone, int currentOrder, std::unordered_map<
 bool tooHeavyOrder(std::unordered_map<int, int>& orderProducts) {
 	int load = 0;
 	for (auto product : orderProducts) {
-		load += product.second;
+		load += productsWeight[product.first] * product.second;
 	}
 	
 	return load > maxPayload;
