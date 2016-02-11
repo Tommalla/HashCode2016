@@ -115,7 +115,6 @@ int main(int argc, char const *argv[])
 		else if(orderLoadingState == 1)
 		{
 			ss >> productsNumForOrders;
-			numberOfProductsPerOrder[loadedOrders].resize(numOfProducts, 0);
 			++orderLoadingState;
 		}
 		else if(orderLoadingState == 2)
@@ -124,7 +123,7 @@ int main(int argc, char const *argv[])
 			{
 				int itemId;
 				ss >> itemId;
-				++numberOfProductsPerOrder[loadedOrders][itemId];
+				numberOfProductsPerOrder[loadedOrders].push_back(itemId);
 			}
 			orderLoadingState = 0;
 			++loadedOrders;
@@ -165,7 +164,7 @@ int main(int argc, char const *argv[])
 
 	for(auto it = dronsCoords.begin(); it != dronsCoords.end(); ++it)
 	{
-		std::cerr << "Current drons coords: " << std::get<0>(*it) << ", " << std::get<1>(*it) << std::endl;
+		std::cerr << "Current drons coords: " << it->first << ", " << it->second << std::endl;
 	}
 
 	//droneCommands.push_back(wait(1, 2));

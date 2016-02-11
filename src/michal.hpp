@@ -37,10 +37,12 @@ std::unordered_map<int, int> generateOrderProducts(int orderId) {
 	std::unordered_map<int, int> orderProducts;
 	order& o = orders[orderId];
 	for (size_t i = 0; i < o.products.size(); i++) {
-		if (orderProducts.find(o.products[i]) != orderProducts.end()) {
-			orderProducts.insert({o.products[i], 1});
-		}
-		orderProducts.insert({o.products[i], orderProducts[o.products[i]] + 1});
+		// if (orderProducts.find(o.products[i]) != orderProducts.end()) {
+		// 	orderProducts.insert({o.products[i], 1});
+		// }
+		// orderProducts.insert({o.products[i], orderProducts[o.products[i]] + 1});
+
+		orderProducts[o.products[i]]++;
 	}
 
 	return orderProducts;
@@ -63,6 +65,7 @@ void sendDrone(int warehouseId, int drone, int currentOrder, std::unordered_map<
 	for (auto product : orderProducts) {
 		// first type
 		// second quantity
+		std::cerr << "CHUJ: " << product.first << " " << product.second << std::endl;
 		warehouse[product.first] = warehouse[product.first] - product.second;
 		droneCommands.push_back(load(drone, warehouseId, product.first, product.second));
 	}
@@ -80,6 +83,7 @@ void calculate() {
 	std::sort(orders.begin(), orders.end(), cmp);
 	
 	for (int i = 0; i < numOfOrders; i++) {
+		
 		int currentOrder = i;
 		std::unordered_map<int, int> orderProducts = generateOrderProducts(currentOrder);
 		int warehouse = findWarehouseForOrder(currentOrder, orderProducts);
@@ -88,7 +92,7 @@ void calculate() {
 			TIME = droneRecord.first;
 			
 			int newTime = getTimeForDrone(warehouse, droneRecord.second, orders[currentOrder], orderProducts);
-			
+			std::cerr << "TIME: " << newTime << std::endl; 
 			if (newTime <= turns)
 				sendDrone(warehouse, droneRecord.second, currentOrder, orderProducts, newTime);
 			else
