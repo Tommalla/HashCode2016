@@ -33,8 +33,7 @@ bool warehouseHasAllProducts(int warehouseId, std::unordered_map<int, int>& orde
 	return true;
 }
 
-// positive if found, -1 if not
-int findWarehouseForOrder(int orderId) {
+std::unordered_map<int, int> generateOrderProducts(int orderId) {
 	std::unordered_map<int, int> orderProducts;
 	order& o = orders[orderId];
 	for (size_t i = 0; i < o.products.size(); i++) {
@@ -43,7 +42,12 @@ int findWarehouseForOrder(int orderId) {
 		}
 		orderProducts.insert({o.products[i], orderProducts[o.products[i]] + 1});
 	}
-		
+
+	return orderProducts;
+}
+
+// positive if found, -1 if not
+int findWarehouseForOrder(int orderId, std::unordered_map<int, int>& orderProducts) {
 	for (int warehouseId = 0; warehouseId < numOfWarehouse; warehouseId++) {
 		if (warehouseHasAllProducts(warehouseId, orderProducts)) {
 			return warehouseId;
@@ -53,11 +57,22 @@ int findWarehouseForOrder(int orderId) {
 	return -1;
 }
 
-void sendDrone(int warehosueId, int drone, int currentOrder, int newTime) {
+void sendDrone(int warehouseId, int drone, int currentOrder, std::unordered_map<int, int>& orderProducts, int newTime) {
+	productsPerTypeVector& warehouse = productsPerWarehousePerType[warehouseId];
 	
+	for (auto product : orderProducts) {
+		// first type
+		// second quantity
+		warehouse[product.first] = warehouse[product.first] - product.second;
+		droneCommands.push_back(droneCommands.load(drone, warehouseId, product.first, product.second));
+	}
 	
+	registerDroneBusy(newTime, drone);
+	
+	for (auto product : orderProducts) {
+		
+	}
 }
-
 
 void calculate() {
 	std::cerr << "hello calculate\n";
@@ -66,15 +81,16 @@ void calculate() {
 	
 	for (int i = 0; i < numOfOrders; i++) {
 		int currentOrder = i;
-		int warehouse = findWarehouseForOrder(currentOrder);
+		std::unordered_map<int, int>& orderProducts = generateOrderProducts(currentOrder);
+		int warehouse = findWarehouseForOrder(currentOrder, orderProducts);
 		if (warehouse >= 0) {
 			std::pair<int, int> droneRecord = getSoonestFreeDrone();
 			TIME = droneRecord.first;
 			
-			int newTime = getTimeForDrone(warehouse, droneRecord.second, orders[currentOrder]);
+			int newTime = getTimeForDrone(warehouse, droneRecord.second, orders[currentOrder], orderProducts);
 			
 			if (newTime <= turns)
-				sendDrone(warehouse, droneRecord.second, currentOrder, newTime);
+				sendDrone(warehouse, droneRecord.second, currentOrder, orderProducts, newTime);
 			else
 				break;
 		}
