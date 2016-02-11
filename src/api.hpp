@@ -137,4 +137,14 @@ pair<int, int> getSoonestFreeDrone() {
 	return res;
 }
 
+struct order {
+	coords destination;
+	productsPerTypeVector products;
+};
+
+int getTimeForDrone(int warehouse, int drone, order& o) {
+	
+	return -1;
+}
+
 #endif

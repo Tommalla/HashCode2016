@@ -6,11 +6,6 @@
 
 #include <algorithm>
 
-struct order {
-	coords destination;
-	productsPerTypeVector products;
-};
-
 int TIME = 0;
 std::vector<order> orders;
 
@@ -58,8 +53,9 @@ int findWarehouseForOrder(int orderId) {
 	return -1;
 }
 
-void sendDrone(int warehosueId, int drone, int currentOrder) {
-	// TODO KURWA
+void sendDrone(int warehosueId, int drone, int currentOrder, int newTime) {
+	
+	
 }
 
 
@@ -71,11 +67,16 @@ void calculate() {
 	for (int i = 0; i < numOfOrders; i++) {
 		int currentOrder = i;
 		int warehouse = findWarehouseForOrder(currentOrder);
-		if (warehouse > 0) {
+		if (warehouse >= 0) {
 			std::pair<int, int> droneRecord = getSoonestFreeDrone();
-			TIME += droneRecord.first;
-			// TODO przed wyslaniem sprawdz czy nie trzeba juz skonczyc
-			sendDrone(warehouse, droneRecord.second, currentOrder);
+			TIME = droneRecord.first;
+			
+			int newTime = getTimeForDrone(warehouse, droneRecord.second, orders[currentOrder]);
+			
+			if (newTime <= turns)
+				sendDrone(warehouse, droneRecord.second, currentOrder, newTime);
+			else
+				break;
 		}
 
 	}
