@@ -1,5 +1,6 @@
 #ifndef __API_HPP
 #define __API_HPP
+#include <cassert>
 #include <vector>
 #include <stdio.h>
 #include <iostream>
@@ -76,18 +77,8 @@ DroneCommand* wait(const int droneId, const int time) {
 	return res;
 }
 
-// Func:
-
-// Outputs any errors in solution to stderr along with the result for the solution;
-int validateSolution() {
-	int result = 0;
-	
-	
-	cerr << "Solution value: " << result << endl;
-	return result;
-}
-
 // Containers:
+set<pair<int, int>> droneTimesQueue;
 
 //Matrix:
 int rows;
@@ -118,5 +109,27 @@ std::vector<productsPerTypeVector> numberOfProductsPerOrder;
 std::vector<coords> dronsCoords;
 
 vector<DroneCommand *> droneCommands;
+
+// Func:
+
+// Outputs any errors in solution to stderr along with the result for the solution;
+int validateSolution() {
+	int result = 0;
+	
+	
+	//cerr << "Solution value: " << result << endl;
+	return result;
+}
+
+void registerDroneBusy(const int untilTimestamp, const int droneId) {
+	droneTimesQueue.insert(make_pair(untilTimestamp, droneId));
+}
+
+pair<int, int> getSoonestFreeDrone() {
+	assert(!droneTimesQueue.empty());
+	auto res = *droneTimesQueue.begin();
+	droneTimesQueue.erase(droneTimesQueue.begin());
+	return res;
+}
 
 #endif
