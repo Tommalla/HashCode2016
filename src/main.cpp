@@ -3,133 +3,61 @@
 #include <utility>
 #include <sstream>
 
+void printVector(const vector<int> &vect) {
+	for (const auto &elem: vect) {
+		cerr << elem << " ";
+	}
+	cerr << endl;
+}
+
 int main(int argc, char const *argv[])
 {
- 	std::ifstream file("input");
- 	
- 	int lineNum = 0;
- 	int loadedWarehouses = 0;
- 	bool warehousesLocationLoaded = false;
- 	bool orderNumLoaded = false;
- 	int orderLoadingState = 0;
- 	int loadedOrders = 0;
- 	int productsNumForOrders = 0;
-
-    for(std::string line; getline(file, line); )
-	{
-		std::cerr << "Reading line: " << lineNum << std::endl; 
-		std::stringstream ss(line);
-			
-		if(lineNum == 0)
-		{
-			ss >> rows;
-			ss >> columns;
-			ss >> numOfDrones;
-			ss >> turns;
-			ss >> maxPayload;
-			std::cerr << "rows: " << rows
-					<< " columns: " << columns
-					<< " numOfDrones: " << numOfDrones
-					<< " turns: " << turns
-					<< " maxPayload: " << maxPayload 
-					<< std::endl;
+	cin >> rows >> columns >> numOfDrones >> turns >> maxPayload;
+	std::cerr << "rows: " << rows
+		<< " columns: " << columns
+		<< " numOfDrones: " << numOfDrones
+		<< " turns: " << turns
+		<< " maxPayload: " << maxPayload 
+		<< std::endl;
+		
+	cin >> numOfProducts;
+	std::cerr << "num of product types: " << numOfProducts << std::endl;
+	
+	productsWeight.resize(numOfProducts);
+	for (int i = 0; i < numOfProducts; ++i) {
+		cin >> productsWeight[i];
+	}
+	
+	std::cerr << "Products weight: ";
+	printVector(productsWeight);
+	
+	cin >> numOfWarehouse;
+	std::cerr << "numOfWarehouse: " << numOfWarehouse << std::endl;
+	
+	WarehouseCoords.resize(numOfWarehouse);
+	productsPerWarehousePerType.resize(numOfWarehouse);
+	for (int i = 0; i < numOfWarehouse; ++i) {
+		cin >> WarehouseCoords[i].first >> WarehouseCoords[i].second;
+		productsPerWarehousePerType[i].resize(numOfProducts);
+		for (int j = 0; j < numOfProducts; ++j) {
+			cin >> productsPerWarehousePerType[i][j];
 		}
-		else if(lineNum == 1)
-		{
-			ss >> numOfProducts;
-			std::cerr << "num of product types: " << numOfProducts << std::endl;
+	}
+	
+	cin >> numOfOrders;
+	std::cerr << "num of orders: " << numOfOrders << std::endl;
+	orderDestination.resize(numOfOrders);
+	numberOfProductsPerOrder.resize(numOfOrders);
+	
+	for (int i = 0; i < numOfOrders; ++i) {
+		cin >> orderDestination[i].first >> orderDestination[i].second;
+		int productsForOrder;
+		cin >> productsForOrder;
+		while (productsForOrder--) {
+			int productId;
+			cin >> productId;
+			numberOfProductsPerOrder[i].push_back(productId);
 		}
-		else if(lineNum == 2)
-		{
-			int numberOfProductsWeightGot = 0;
-			
-			productsWeight.resize(numOfProducts);
-			while(numberOfProductsWeightGot < numOfProducts)
-			{
-				ss >> productsWeight[numberOfProductsWeightGot];	
-				++numberOfProductsWeightGot;
-			}
-  			
-  			std::cerr << "Products weight: ";
-  			for (auto i = productsWeight.begin(); i != productsWeight.end(); ++i)
-			{
-    			std::cerr << *i << ' ';
-    		}
-    		std::cerr << std::endl;
-		}
-		else if(lineNum == 3)
-		{
-			ss >> numOfWarehouse;
-			std::cerr << "numOfWarehouse: " << numOfWarehouse << std::endl;
-
-			productsPerWarehousePerType.resize(numOfWarehouse);
-			WarehouseCoords.resize(numOfWarehouse);
-		}
-		else if(loadedWarehouses < numOfWarehouse)
-		{
-			if(not warehousesLocationLoaded)
-			{
-				int x;
-				int y;
-				ss >> x;
-				ss >> y;
-				WarehouseCoords[loadedWarehouses] = coords(x,y);
-
-				//All drones started from warehouse 0
-				if(loadedWarehouses == 0)
-				{
-					dronsCoords.resize(numOfDrones, coords(x,y));
-				}
-			}
-			else
-			{
-				productsPerWarehousePerType[loadedWarehouses].resize(numOfProducts);
-				for(int productTypeId = 0; productTypeId < numOfProducts; ++productTypeId)
-				{
-					ss >> productsPerWarehousePerType[loadedWarehouses][productTypeId];
-				}
-				++loadedWarehouses;
-			}
-
-			//We want to get two different lines with warehouse info
-			warehousesLocationLoaded = not warehousesLocationLoaded;
-		}
-		else if(not orderNumLoaded)
-		{
-			orderNumLoaded = true;
-			ss >> numOfOrders;
-			std::cerr << "num of orders: " << numOfOrders << std::endl;
-			orderDestination.resize(numOfOrders);
-			numberOfProductsPerOrder.resize(numOfOrders);
-
-		}
-		else if(orderLoadingState == 0)
-		{
-			int x;
-			int y;
-			ss >> x;
-			ss >> y;
-			orderDestination[loadedOrders] = coords(x,y);
-			++orderLoadingState;
-		}
-		else if(orderLoadingState == 1)
-		{
-			ss >> productsNumForOrders;
-			++orderLoadingState;
-		}
-		else if(orderLoadingState == 2)
-		{
-			for(int i = 0; i < productsNumForOrders; ++i)
-			{
-				int itemId;
-				ss >> itemId;
-				numberOfProductsPerOrder[loadedOrders].push_back(itemId);
-			}
-			orderLoadingState = 0;
-			++loadedOrders;
-		}
-
-		++lineNum;
 	}
 
 	for(auto it = WarehouseCoords.begin(); it != WarehouseCoords.end(); ++it)
@@ -166,9 +94,6 @@ int main(int argc, char const *argv[])
 	{
 		std::cerr << "Current drons coords: " << it->first << ", " << it->second << std::endl;
 	}
-
-	//droneCommands.push_back(wait(1, 2));
-	//droneCommands.push_back(deliver(0, 2, 3, 10));
 	
 	initialDronesAvailable = numOfDrones;
 	

@@ -38,11 +38,6 @@ std::unordered_map<int, int> generateOrderProducts(int orderId) {
 	std::unordered_map<int, int> orderProducts;
 	order& o = orders[orderId];
 	for (size_t i = 0; i < o.products.size(); i++) {
-		// if (orderProducts.find(o.products[i]) != orderProducts.end()) {
-		// 	orderProducts.insert({o.products[i], 1});
-		// }
-		// orderProducts.insert({o.products[i], orderProducts[o.products[i]] + 1});
-
 		orderProducts[o.products[i]]++;
 	}
 
