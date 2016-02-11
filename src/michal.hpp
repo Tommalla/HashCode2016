@@ -67,11 +67,12 @@ void calculate() {
 	for (int i = 0; i < numOfOrders; i++) {
 		int currentOrder = orders[i];
 		int warehouse = findWarehouseForOrder(currentOrder);
-		std::pair<int, int> droneRecord = getSoonestFreeDrone();
-		TIME += droneRecord.first;
-		// TODO przed wyslaniem sprawdz czy nie trzeba juz skonczyc
-		sendDrone(warehouse, drone, currentOrder);
-		
+		if (warehouse > 0) {
+			std::pair<int, int> droneRecord = getSoonestFreeDrone();
+			TIME += droneRecord.first;
+			// TODO przed wyslaniem sprawdz czy nie trzeba juz skonczyc
+			sendDrone(warehouse, drone, currentOrder);
+		}
 	}
 	
 	std::cerr << "end calculate\n";
