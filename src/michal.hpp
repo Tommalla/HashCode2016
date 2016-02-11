@@ -17,8 +17,8 @@ inline bool cmp(const order& o1, const order& o2) {
 void initOrders() {
 	for (int i = 0; i < numOfOrders; ++i) {
 		order current;
-		order.destination = orderDestination[i];
-		order.products = numberOfProductsPerOrder[i];
+		//order.destination = orderDestination[i];
+		//order.products = numberOfProductsPerOrder[i];
 		orders.push_back(current);
 	}
 }
@@ -26,7 +26,7 @@ void initOrders() {
 void calculate() {
 
 	initOrders();	
-	std::sort(orders.begin(), orders.end(), cmp);
+	//std::sort(orders.begin(), orders.end(), cmp);
 	
 	
 	
