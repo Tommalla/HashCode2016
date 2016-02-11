@@ -13,9 +13,10 @@ int main(int argc, char const *argv[])
 		++line_num;
 	}
 
+	calculate();
 	
-	droneCommands.push_back(wait(1, 2));
-	droneCommands.push_back(deliver(0, 2, 3, 10));
+// 	droneCommands.push_back(wait(1, 2));
+// 	droneCommands.push_back(deliver(0, 2, 3, 10));
 	
 	int solutionValue = validateSolution();
 	if (solutionValue < 0) {
@@ -26,6 +27,6 @@ int main(int argc, char const *argv[])
 		command->printCommand();
 		delete command;
 	}
-	
+
 	return solutionValue;
 }
