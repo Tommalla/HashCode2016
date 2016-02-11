@@ -54,7 +54,9 @@ int findWarehouseForOrder(int orderId) {
 	return -1;
 }
 
-
+void sendDrone(int warehosueId, int drone, int currentOrder) {
+	// TODO KURWA
+}
 
 
 void calculate() {
@@ -63,8 +65,13 @@ void calculate() {
 	std::sort(orders.begin(), orders.end(), cmp);
 	
 	for (int i = 0; i < numOfOrders; i++) {
-		int warehouse = findWarehouseForOrder(i);
-		int drone = 
+		int currentOrder = orders[i];
+		int warehouse = findWarehouseForOrder(currentOrder);
+		std::pair<int, int> droneRecord = getSoonestFreeDrone();
+		TIME += droneRecord.first;
+		// TODO przed wyslaniem sprawdz czy nie trzeba juz skonczyc
+		sendDrone(warehouse, drone, currentOrder);
+		
 	}
 	
 	std::cerr << "end calculate\n";
