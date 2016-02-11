@@ -1,5 +1,7 @@
 #ifndef __MICHAL_HPP
 #define __MICHAL_HPP
+#include <unordered_map>
+
 #include "api.hpp"
 
 #include <algorithm>
@@ -32,13 +34,15 @@ bool warehouseHasAllProducts(int warehouseId, std::unordered_map<int, int>& orde
 		if (warehouse[product.first] < product.second)
 			return false;
 	}
+	
+	return true;
 }
 
 // positive if found, -1 if not
 int findWarehouseForOrder(int orderId) {
 	std::unordered_map<int, int> orderProducts;
 	order& o = orders[orderId];
-	for (int i = 0; i < o.products; i++) {
+	for (size_t i = 0; i < o.products.size(); i++) {
 		if (orderProducts.find(o.products[i]) != orderProducts.end()) {
 			orderProducts.insert({o.products[i], 1});
 		}
@@ -65,14 +69,15 @@ void calculate() {
 	std::sort(orders.begin(), orders.end(), cmp);
 	
 	for (int i = 0; i < numOfOrders; i++) {
-		int currentOrder = orders[i];
+		int currentOrder = i;
 		int warehouse = findWarehouseForOrder(currentOrder);
 		if (warehouse > 0) {
 			std::pair<int, int> droneRecord = getSoonestFreeDrone();
 			TIME += droneRecord.first;
 			// TODO przed wyslaniem sprawdz czy nie trzeba juz skonczyc
-			sendDrone(warehouse, drone, currentOrder);
+			sendDrone(warehouse, droneRecord.second, currentOrder);
 		}
+
 	}
 	
 	std::cerr << "end calculate\n";

@@ -79,6 +79,7 @@ DroneCommand* wait(const int droneId, const int time) {
 
 // Containers:
 set<pair<int, int>> droneTimesQueue;
+int initialDronesAvailable;
 
 //Matrix:
 int rows;
@@ -126,8 +127,12 @@ void registerDroneBusy(const int untilTimestamp, const int droneId) {
 }
 
 pair<int, int> getSoonestFreeDrone() {
+	if (initialDronesAvailable > 0) {
+		initialDronesAvailable--;
+		return make_pair(0, initialDronesAvailable);
+	}
 	assert(!droneTimesQueue.empty());
-	auto res = *droneTimesQueue.begin();
+	auto res = *(droneTimesQueue.begin());
 	droneTimesQueue.erase(droneTimesQueue.begin());
 	return res;
 }

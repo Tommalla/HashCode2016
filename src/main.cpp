@@ -1,5 +1,5 @@
 #include "api.hpp"
-//#include "michal.hpp"
+#include "michal.hpp"
 #include <utility>
 #include <sstream>
 
@@ -168,8 +168,12 @@ int main(int argc, char const *argv[])
 		std::cerr << "Current drons coords: " << std::get<0>(*it) << ", " << std::get<1>(*it) << std::endl;
 	}
 
-	droneCommands.push_back(wait(1, 2));
-	droneCommands.push_back(deliver(0, 2, 3, 10));
+	//droneCommands.push_back(wait(1, 2));
+	//droneCommands.push_back(deliver(0, 2, 3, 10));
+	
+	initialDronesAvailable = numOfDrones;
+	
+	calculate();
 	
 	for (DroneCommand* command : droneCommands) {
 		command->printCommand();
