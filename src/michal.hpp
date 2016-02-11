@@ -92,6 +92,8 @@ void calculate() {
 	initOrders();
 	std::sort(orders.begin(), orders.end(), cmp);
 	
+	
+	
 	for (int i = 0; i < numOfOrders; i++) {
 		
 		int currentOrder = i;
@@ -108,11 +110,11 @@ void calculate() {
 			std::cerr << "TIME: " << newTime << std::endl; 
 			if (newTime <= turns)
 				sendDrone(warehouse, droneRecord.second, currentOrder, orderProducts, newTime);
-			else
-				break;
 		}
 
 	}
+	
+	
 	
 	std::cerr << "end calculate\n";
 }
