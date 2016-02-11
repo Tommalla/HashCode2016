@@ -1,11 +1,13 @@
 #ifndef __API_HPP
 #define __API_HPP
 #include <cassert>
+#include <cmath>
 #include <vector>
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
 #include <set>
+#include <unordered_map>
 
 using namespace std;
 
@@ -142,9 +144,15 @@ struct order {
 	productsPerTypeVector products;
 };
 
-int getTimeForDrone(int warehouse, int drone, order& o) {
+int getTimeForDrone(int warehouse, int drone, const order& o, const unordered_map<int, int>& orderProducts) {
+	auto warehousePos = WarehouseCoords[warehouse];
 	
-	return -1;
+	double dx = warehousePos.first - o.destination.first;
+	double dy = warehousePos.second - o.destination.second;
+	
+	int d = (int)ceil(sqrt(dx * dx + dy * dy));
+	
+	return d + 2 * orderProducts.size() ;
 }
 
 #endif

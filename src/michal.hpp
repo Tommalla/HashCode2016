@@ -81,7 +81,7 @@ void calculate() {
 	
 	for (int i = 0; i < numOfOrders; i++) {
 		int currentOrder = i;
-		std::unordered_map<int, int>& orderProducts = generateOrderProducts(currentOrder);
+		std::unordered_map<int, int> orderProducts = generateOrderProducts(currentOrder);
 		int warehouse = findWarehouseForOrder(currentOrder, orderProducts);
 		if (warehouse >= 0) {
 			std::pair<int, int> droneRecord = getSoonestFreeDrone();
