@@ -175,6 +175,8 @@ int main(int argc, char const *argv[])
 	
 	calculate();
 	
+	cout << droneCommands.size() << endl;
+	
 	for (DroneCommand* command : droneCommands) {
 		command->printCommand();
 		delete command;
