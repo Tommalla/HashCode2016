@@ -1,3 +1,6 @@
+#include <vector>
+#include <stdio.h>
+
 int main(int argc, char const *argv[])
 {
     std::vector<char> v;
